@@ -1,14 +1,13 @@
 # SmartHRMS
 
-A full-stack employee management system with automated attendance tracking, leave management, and payroll processing.
+A full-stack employee management system with automated attendance tracking, leave management, and employee management.
 
 ## 🎯 What It Does
 
-Automates HR operations:
+Automates core HR operations:
 - Employee & department management
 - Daily attendance (check-in/out, auto-calculate hours)
 - Leave applications with approval workflow
-- Payroll computation based on attendance
 
 ---
 
@@ -24,9 +23,8 @@ React • Tailwind CSS • Axios
 
 ## 🏗️ Architecture
 
-```
 Routes → Controllers → Services → Repositories → Models
-```
+
 
 **OOP Principles Applied:**
 - Encapsulation (business logic in services)
@@ -53,25 +51,25 @@ Routes → Controllers → Services → Repositories → Models
 - Each type has different validation rules
 - Approval workflow (Pending → Approved/Rejected)
 
-### Payroll
-- Auto-compute salary from attendance + approved leaves
+### Employee Management
+- Admin can create, update, and manage employees
+- Role-based access (Admin vs Employee)
 
 ---
 
 ## 📁 Project Structure
 
-```
 src/
-├── config/          # DB connection
-├── models/          # Mongoose schemas
-├── repositories/    # Data access (extends BaseRepository)
-├── services/        # Business logic
-├── controllers/     # Request handlers
-├── routes/          # API endpoints
-├── middlewares/     # Auth, validation, error handling
-├── validators/      # Leave type validators
-└── utils/           # Helpers (date, constants, response)
-```
+├── config/ # DB connection
+├── models/ # Mongoose schemas
+├── repositories/ # Data access (extends BaseRepository)
+├── services/ # Business logic
+├── controllers/ # Request handlers
+├── routes/ # API endpoints
+├── middlewares/ # Auth, validation, error handling
+├── validators/ # Leave type validators
+└── utils/ # Helpers (date, constants, response)
+
 
 ---
 
@@ -91,5 +89,3 @@ Built for **Software Engineering & System Design** milestone:
 - OOP principles in practice
 - Scalable backend design
 - Production-ready code structure
-
----

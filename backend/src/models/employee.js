@@ -31,7 +31,7 @@ const employeeSchema = new mongoose.Schema({
     role: {
       type: String,
       enum: {
-        values: ["EMPLOYEE", "ADMIN", "HR"],
+        values: ["EMPLOYEE", "ADMIN"],
         message: "Invalid role",
       },
       default: "EMPLOYEE",
