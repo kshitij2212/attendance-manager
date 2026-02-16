@@ -3,7 +3,7 @@ const app = express()
 
 app.use(express.json())
 app.get("/",(req,res)=>{
-    res.send("Hey attendance-manager")
+    res.send("Hey Attendance-Manager")
 })
 
 module.exports = app
