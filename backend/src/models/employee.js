@@ -1,73 +1,44 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
 const employeeSchema = new mongoose.Schema({
-    name : {
-        type : String, 
-        required : [true,'Employee name is required'],
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "User reference is required"],
+        unique: true
+    },
+    name: {
+        type: String,
+        required: [true, "Employee name is required"],
         trim: true,
         lowercase: true,
         minlength: 2
     },
-    email : {
-        type : String, 
-        required : true, 
-        lowercase : true,
-        trim : true,
-        match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"],
-        unique : true
+    phone: {
+        type: String,
+        required: [true, "Phone number is required"],
+        match: [/^\d{10}$/, "Please enter a valid phone number"]
     },
-    password : {
-        type : String, 
-        required : true,
-        minlength: 6,
-        select: false,
+    department: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Department",
+        default: null
     },
-    phone : {
-        type : String, 
-        required : true,
-        match: [/^\d{10}$/, "Please enter a valid phone number"],
+    shiftStartTime: {
+        type: String,
+        default: "09:00"
     },
-    role: {
-      type: String,
-      enum: {
-        values: ["EMPLOYEE", "ADMIN"],
-        message: "Invalid role",
-      },
-      default: "EMPLOYEE",
+    shiftEndTime: {
+        type: String,
+        default: "18:00"
     },
-    department : {
-        type : mongoose.Schema.Types.ObjectId, 
-        ref : "Department", 
-        default : null
-    },
-    joinDate : {
-        type : Date, 
-        default : Date.now
-    },
-    isActive : {
-        type : Boolean, 
-        default : true
+    joinDate: {
+        type: Date,
+        default: Date.now
     }
-},{
-    timestamps : true,
+}, {
+    timestamps: true,
     versionKey: false
-})
-
-
-employeeSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
 });
 
-
-employeeSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
-
-module.exports = mongoose.model("Employee" , employeeSchema)
-
+module.exports = mongoose.model("Employee", employeeSchema);
