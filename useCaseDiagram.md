@@ -9,34 +9,33 @@
 ---
 
 ## 📊 Complete System Use Case Diagram
-
 ```mermaid
 graph TB
-    Employee((👤<br/>Employee))
-    Admin((👨‍💼<br/>Admin))
-    System((⚙️<br/>System))
+    Employee((Employee))
+    Admin((Admin))
+    System((System))
     
     subgraph EMS["Employee Management System"]
         
-        subgraph Auth["🔐 Authentication"]
+        subgraph Auth["Authentication"]
             Login[Login]
             Register[Register]
             ViewProfile[View Profile]
         end
         
-        subgraph EmpMgmt["👥 Employee Module"]
+        subgraph EmpMgmt["Employee Module"]
             CreateEmp[Create Employee]
             ListEmp[List Employees]
             UpdateEmp[Update Employee]
             DeleteEmp[Delete Employee]
         end
         
-        subgraph DeptMgmt["🏢 Department Module"]
+        subgraph DeptMgmt["Department Module"]
             CreateDept[Create Department]
             ManageDept[Manage Departments]
         end
         
-        subgraph AttMgmt["📅 Attendance Module"]
+        subgraph AttMgmt["Attendance Module"]
             CheckIn[Mark Check-In]
             CheckOut[Mark Check-Out]
             ViewAtt[View Attendance]
@@ -44,15 +43,15 @@ graph TB
             AutoCalc[Auto Calculate]
         end
         
-        subgraph LeaveMgmt["🏖️ Leave Module"]
+        subgraph LeaveMgmt["Leave Module"]
             ApplyLeave[Apply Leave]
             ViewLeaves[View Leaves]
             ApproveLeave[Approve/Reject]
             AutoAtt[Auto Mark Attendance]
         end
     end
-    
-    %% Employee actions
+
+
     Employee --> Login
     Employee --> Register
     Employee --> ViewProfile
@@ -62,7 +61,6 @@ graph TB
     Employee --> ApplyLeave
     Employee --> ViewLeaves
     
-    %% Admin actions
     Admin --> Login
     Admin --> ViewProfile
     Admin --> CreateEmp
@@ -76,26 +74,15 @@ graph TB
     Admin --> ViewLeaves
     Admin --> ApproveLeave
     
-    %% System automated
     System --> AutoCalc
     System --> AutoAtt
     
-    %% Triggers
-    CheckIn -.trigger.-> AutoCalc
-    CheckOut -.trigger.-> AutoCalc
-    ApproveLeave -.trigger.-> AutoAtt
-    
-    style EMS fill:#f9f9f9,stroke:#333,stroke-width:3px
-    style Auth fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style EmpMgmt fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style DeptMgmt fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style AttMgmt fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style LeaveMgmt fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    CheckIn -.-> AutoCalc
+    CheckOut -.-> AutoCalc
+    ApproveLeave -.-> AutoAtt
 ```
 
 ---
-
-## 🔐 Authentication Use Cases
 
 ```mermaid
 graph LR
@@ -114,16 +101,11 @@ graph LR
     Admin --> UC2
     Admin --> UC3
     
-    UC1 -->|includes| Hash[Hash Password]
-    UC2 -->|includes| Verify[Verify Credentials]
-    UC2 -->|includes| JWT[Generate JWT]
-    
-    style Auth fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    UC1 --> Hash[Hash Password]
+    UC2 --> Verify[Verify Credentials]
+    UC2 --> JWT[Generate JWT]
 ```
-
 ---
-
-## 👥 Employee Management Use Cases
 
 ```mermaid
 graph TB
@@ -141,15 +123,12 @@ graph TB
     Admin --> UC5
     Admin --> UC6
     Admin --> UC7
-    Employee -.own data only.-> UC6
+    Employee -.-> UC6
     
-    UC4 -->|requires| ValidUser[User Must Exist]
-    UC7 -->|checks| NoPending[No Pending Leaves]
-    
-    style EmpModule fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    UC4 --> ValidUser[User Must Exist]
+    UC7 --> NoPending[No Pending Leaves]
 ```
 
----
 
 ## 🏢 Department Management Use Cases
 
@@ -230,22 +209,6 @@ graph TB
         UC24[Reject Leave]
         UC25[Auto Create Attendance]
     end
-    
-    Employee --> UC19
-    Employee --> UC20
-    Employee --> UC21
-    
-    Admin --> UC22
-    Admin --> UC23
-    Admin --> UC24
-    
-    System -.automated.-> UC25
-    
-    UC19 -->|validates| DateRange[Valid Date Range]
-    UC21 -->|requires| Pending[Status = PENDING]
-    UC23 -.triggers.-> UC25
-    
-    style LeaveModule fill:#fff9c4,stroke:#f57f17,stroke-width:2px
 ```
 
 ---
