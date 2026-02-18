@@ -30,66 +30,6 @@ graph TB
 
 ---
 
-## 📊 Database Schema
-```mermaid
-erDiagram
-    User ||--|| Employee : "has one"
-    Employee }o--|| Department : "belongs to"
-    Employee ||--o{ Attendance : "has many"
-    Employee ||--o{ Leave : "applies many"
-    User ||--o{ Leave : "approves as admin"
-    
-    User {
-        ObjectId _id
-        string email UK
-        string password
-        enum role
-        boolean isActive
-    }
-    
-    Employee {
-        ObjectId _id
-        ObjectId user FK
-        string name
-        string phone
-        ObjectId department FK
-        string shiftStartTime
-        string shiftEndTime
-        date joinDate
-    }
-    
-    Department {
-        ObjectId _id
-        string name UK
-        string description
-    }
-    
-    Attendance {
-        ObjectId _id
-        ObjectId employee FK
-        date date
-        date checkInTime
-        date checkOutTime
-        number totalHours
-        enum status
-        boolean lateArrival
-    }
-    
-    Leave {
-        ObjectId _id
-        ObjectId employee FK
-        enum leaveType
-        number totalDays
-        date startDate
-        date endDate
-        string reason
-        enum status
-        ObjectId approvedBy FK
-    }
-```
-
----
-
 ## 🎨 Core Features
 
 ### 1. Authentication & Authorization
@@ -151,8 +91,9 @@ erDiagram
 
 ---
 
-## 🚀 API Endpoints
+## 🚀 API Endpoints 
 
+### (to be made)
 ### Auth (`/api/auth`)
 - `POST /register` - Register new user
 - `POST /login` - Login user (returns JWT)
@@ -193,7 +134,7 @@ erDiagram
 
 ## 🎯 Smart Features
 
-### Attendance Auto-Calculations (Pre-save Hook)
+### Attendance Auto-Calculations
 ```javascript
 // Automatic logic on save:
 1. Normalize date to midnight (00:00:00)
