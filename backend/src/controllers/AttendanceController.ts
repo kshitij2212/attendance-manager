@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-const mongoose = require('../config/mongo')
-const Attendance = require("../models/attendance");
+import mongoose from "../config/mongo";
+import Attendance from "../models/attendance";
 
 const checkIN = async (req: Request, res: Response) => {
   try {
@@ -82,7 +82,7 @@ const getAllAttendance = async (_req: Request, res: Response) => {
 const getattendancebyId = async (req: Request, res: Response) => {
   try {
     const { employeeId } = req.params;
-    const employeeObjId = new mongoose.Types.ObjectId(employeeId);
+    const employeeObjId = new mongoose.Types.ObjectId(employeeId as string);
 
     const data = await Attendance.find({ employee: employeeObjId }).populate("employee").exec();
     res.status(200).json(data);
