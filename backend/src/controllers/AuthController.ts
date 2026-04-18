@@ -17,7 +17,7 @@ const register = async (req: Request, res: Response) => {
 
     let departmentId = null;
     if (department) {
-      const dept = await Department.findOne({ name: department.toLowerCase() });
+      const dept = await Department.findOne({ name: new RegExp(`^${department}$`, 'i') });
       if (dept) {
         departmentId = dept._id;
       } else {
