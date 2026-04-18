@@ -59,7 +59,6 @@ const updateEmployee = async (req: Request, res: Response) => {
       { new: true }
     ).exec();
 
-    // optionally update user email/role
     if (email || role) {
       const employeeDoc = await Employee.findById(id).exec();
       if (employeeDoc && employeeDoc.user) {
