@@ -59,18 +59,20 @@ Routes → Controllers → Services → Repositories → Models
 
 ## 📁 Project Structure
 
+```
 src/
-├── config/ # DB connection
-├── models/ # Mongoose schemas
-├── repositories/ # Data access (extends BaseRepository)
-├── services/ # Business logic
-├── controllers/ # Request handlers
-├── routes/ # API endpoints
-├── middlewares/ # Auth, validation, error handling
-├── validators/ # Leave type validators
-└── utils/ # Helpers (date, constants, response)
+│
+├── config/          # DB connection
+├── models/          # Mongoose schemas
+├── repositories/    # Data access (extends BaseRepository)
+├── services/        # Business logic
+├── controllers/     # Request handlers
+├── routes/          # API endpoints
+├── middlewares/     # Auth, validation, error handling
+├── validators/      # Leave type validators
+└── utils/           # Helpers (date, constants, response)
 
-
+```
 ---
 
 ## 🔐 Security

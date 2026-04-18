@@ -136,7 +136,6 @@ graph TB
 
 ### Attendance Auto-Calculations
 ```javascript
-// Automatic logic on save:
 1. Normalize date to midnight (00:00:00)
 2. If status = LEAVE → clear checkIn/Out, hours, late flag
 3. If checkIn exists → auto-mark PRESENT
@@ -146,7 +145,6 @@ graph TB
 
 ### Leave Approval Auto-Attendance
 ```javascript
-// When admin approves leave:
 1. Update leave status to APPROVED
 2. Loop through startDate to endDate
 3. For each date, create attendance record:
