@@ -14,6 +14,11 @@ const applyLeave = async (req: Request, res: Response) => {
 
     const start = new Date(startDate);
     const end = new Date(endDate);
+
+    if (start > end) {
+      return res.status(400).json({ message: "End date cannot be earlier than start date." });
+    }
+
     const diffTime = Math.abs(end.getTime() - start.getTime());
     const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
@@ -73,22 +78,19 @@ const approveLeave = async (req: Request, res: Response) => {
 
 const rejectLeave = async (req: Request, res: Response) => {
   try {
-    const { employeeId, startDate, endDate, reason } = req.body;
     const { id } = req.params;
 
     const updated = await Leave.findByIdAndUpdate(
       id,
-      {
-        employee: new mongoose.Types.ObjectId(employeeId),
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
-        reason,
-        status: "REJECTED",
-      },
+      { status: "REJECTED" },
       { new: true }
     ).exec();
 
-    return res.status(200).json({ message: "Leave rejected Successfully.", rejected: updated });
+    if (!updated) {
+      return res.status(404).json({ message: "Leave request not found" });
+    }
+
+    return res.status(200).json({ message: "Leave rejected successfully.", rejected: updated });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "server error." });
