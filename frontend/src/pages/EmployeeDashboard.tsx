@@ -30,9 +30,17 @@ const EmployeeDashboard: React.FC = () => {
     try {
       const { data } = await api.get(`/attendance/${employee._id}`);
       setHistory(data);
-      const todayStr = new Date().toISOString().split('T')[0];
+      
+      const today = new Date();
+      const todayStr = today.getFullYear() + '-' + 
+                      String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                      String(today.getDate()).padStart(2, '0');
+
       const found = data.find((r: any) => {
-          const recDate = new Date(r.date).toISOString().split('T')[0];
+          const d = new Date(r.date);
+          const recDate = d.getFullYear() + '-' + 
+                         String(d.getMonth() + 1).padStart(2, '0') + '-' + 
+                         String(d.getDate()).padStart(2, '0');
           return recDate === todayStr;
       });
       setTodayRecord(found);
@@ -185,7 +193,7 @@ const EmployeeDashboard: React.FC = () => {
                 <button
                   onClick={() => handleAction('out')}
                   disabled={actionLoading}
-                  className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 active:scale-95 text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all"
+                  className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-700 active:scale-95 text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all"
                 >
                   {actionLoading
                     ? <Loader2 className="animate-spin" size={16} />
@@ -281,30 +289,42 @@ const EmployeeDashboard: React.FC = () => {
                       key={record._id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="hover:bg-stone-50/50 transition-colors"
+                      className="border-t border-stone-100 hover:bg-stone-50/30 transition-colors"
                     >
-                      <td className="px-6 py-3.5 text-sm font-semibold text-stone-800">
+                      <td className="px-6 py-4 text-sm font-semibold text-stone-800">
                         {fmtDate(record.date)}
                       </td>
-                      <td className="px-6 py-3.5">
+
+                      <td className="px-6 py-4">
                         <span className={`text-[10px] font-bold px-2 py-1 rounded-md border ${statusStyle(record.status)}`}>
                           {record.status}
                         </span>
                       </td>
-                      <td className="px-6 py-3.5 flex items-center gap-2">
-                        <div className={`w-1.5 h-1.5 rounded-full ${record.checkInTime ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : 'bg-stone-200'}`} />
-                        <span className="dm-mono text-sm text-stone-600">
-                          {record.checkInTime ? fmtTime(record.checkInTime) : '-- : --'}
-                        </span>
+
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-1.5 h-1.5 rounded-full ${record.checkInTime ? 'bg-emerald-500' : 'bg-stone-200'}`} />
+                          <span className="dm-mono text-sm text-stone-600">
+                            {record.checkInTime ? fmtTime(record.checkInTime) : '-- : --'}
+                          </span>
+                        </div>
                       </td>
-                      <td className="px-6 py-3.5 flex items-center gap-2">
-                        <div className={`w-1.5 h-1.5 rounded-full ${record.checkOutTime ? 'bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.4)]' : 'bg-stone-200'}`} />
-                        <span className="dm-mono text-sm text-stone-600">
-                          {record.checkOutTime ? fmtTime(record.checkOutTime) : '-- : --'}
-                        </span>
+
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-1.5 h-1.5 rounded-full ${record.checkOutTime ? 'bg-orange-500' : 'bg-stone-200'}`} />
+                          <span className="dm-mono text-sm text-stone-600">
+                            {record.checkOutTime ? fmtTime(record.checkOutTime) : '-- : --'}
+                          </span>
+                        </div>
                       </td>
-                      <td className="px-6 py-3.5 text-sm font-bold text-stone-900 font-mono">
-                        {record.totalHours !== undefined && record.totalHours !== null ? record.totalHours.toFixed(2) : <span className="text-stone-300 font-normal">—</span>}
+
+                      <td className="px-6 py-4 text-sm font-bold text-stone-900 font-mono">
+                        {record.totalHours !== undefined && record.totalHours !== null ? (
+                          <span>{record.totalHours.toFixed(2)} hrs</span>
+                        ) : (
+                          <span className="text-stone-300 font-normal">—</span>
+                        )}
                       </td>
                     </motion.tr>
                   ))}
