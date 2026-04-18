@@ -122,7 +122,7 @@ const EmployeeManagement: React.FC = () => {
           </button>
         </div>
         <div className="bg-white border border-stone-200 rounded-xl flex items-center gap-3 px-4 py-3">
-          <Search size={16} className="text-stone-400 flex-shrink-0" />
+          <Search size={16} className="text-stone-400 shrink-0" />
           <input
             type="text"
             placeholder="Search by name or email..."
@@ -181,7 +181,7 @@ const EmployeeManagement: React.FC = () => {
                         >
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
-                              <div className={`w-9 h-9 rounded-xl ${av.bg} ${av.text} flex items-center justify-center text-xs font-semibold flex-shrink-0`}>
+                              <div className={`w-9 h-9 rounded-xl ${av.bg} ${av.text} flex items-center justify-center text-xs font-semibold shrink-0`}>
                                 {getInitials(emp.name)}
                               </div>
                               <div>

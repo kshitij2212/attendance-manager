@@ -237,7 +237,7 @@ const EmployeeDashboard: React.FC = () => {
                   transition={{ delay: i * 0.08, duration: 0.3 }}
                   className="bg-white border border-stone-200 rounded-2xl px-5 py-4 flex items-center gap-4"
                 >
-                  <div className={`${stat.bg} ${stat.iconColor} w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0`}>
+                  <div className={`${stat.bg} ${stat.iconColor} w-10 h-10 rounded-xl flex items-center justify-center shrink-0`}>
                     <Icon size={18} />
                   </div>
                   <div>
@@ -270,7 +270,7 @@ const EmployeeDashboard: React.FC = () => {
               <thead>
                 <tr className="bg-stone-50/50">
                   {['Date', 'Status', 'Check In', 'Check Out', 'Hours'].map((h) => (
-                    <th key={h} className="px-6 py-3 text-[10px] font-bold text-stone-400 uppercase tracking-widest uppercase tracking-widest border-b border-stone-100">{h}</th>
+                    <th key={h} className="px-6 py-3 text-[10px] font-bold text-stone-400 uppercase tracking-widest border-b border-stone-100">{h}</th>
                   ))}
                 </tr>
               </thead>

@@ -46,7 +46,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="px-6 pt-6 pb-5 border-b" style={{ borderColor: '#e4dfd4' }}>
             <div className="flex items-center gap-2.5">
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
                 style={{ background: '#1a1a18' }}
               >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -89,7 +89,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="px-3 pb-4 space-y-1" style={{ borderTop: '1px solid #e4dfd4', paddingTop: '12px' }}>
             <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl" style={{ background: '#f5f2ec' }}>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-xs font-semibold"
+                className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-semibold"
                 style={{ background: '#e4dfd4', color: '#5c5c58' }}
               >
                 {initials(employee?.name)}
