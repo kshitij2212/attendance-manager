@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
-const Leave = require("../models/leave");
+import Leave from "../models/leave";
 import mongoose from "../config/mongo";
+
+import Attendance from "../models/attendance";
 
 const applyLeave = async (req: Request, res: Response) => {
   try {
@@ -34,22 +36,35 @@ const applyLeave = async (req: Request, res: Response) => {
 
 const approveLeave = async (req: Request, res: Response) => {
   try {
-    const { employeeId, startDate, endDate, reason } = req.body;
     const { id } = req.params;
 
-    const updated = await Leave.findByIdAndUpdate(
-      id,
-      {
-        employee: new mongoose.Types.ObjectId(employeeId),
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
-        reason,
-        status: "APPROVED",
-      },
-      { new: true }
-    ).exec();
+    const leaveRequest = await Leave.findById(id);
+    if (!leaveRequest) {
+      return res.status(404).json({ message: "Leave request not found" });
+    }
 
-    return res.status(200).json({ message: "Leave approved Successfully.", approved: updated });
+    leaveRequest.status = "APPROVED";
+    await leaveRequest.save();
+
+    const start = new Date(leaveRequest.startDate);
+    const end = new Date(leaveRequest.endDate);
+
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      const dateOnly = new Date(d);
+      dateOnly.setHours(0, 0, 0, 0);
+
+      try {
+        await Attendance.create({
+          employee: leaveRequest.employee,
+          date: dateOnly,
+          status: "LEAVE",
+        });
+      } catch (err) {
+        console.log(`Attendance already exists for ${dateOnly}`);
+      }
+    }
+
+    return res.status(200).json({ message: "Leave approved Successfully and attendance updated.", approved: leaveRequest });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "server error." });

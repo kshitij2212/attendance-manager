@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import mongoose from "../config/mongo";
-const User = require("../models/user");
-const Employee = require("../models/employee");
-const Department = require("../models/department");
-import bcrypt from "bcrypt";
+import User from "../models/user";
+import Employee from "../models/employee";
+import Department from "../models/department";
 import jwt from "jsonwebtoken";
 
 const register = async (req: Request, res: Response) => {
@@ -15,7 +14,6 @@ const register = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "User already exists." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     let departmentId = null;
     if (department) {
@@ -27,7 +25,7 @@ const register = async (req: Request, res: Response) => {
       }
     }
 
-    const user = await User.create({ email: email.toLowerCase(), password: hashedPassword, role: role?.toUpperCase() || "EMPLOYEE" });
+    const user = await User.create({ email: email.toLowerCase(), password, role: role?.toUpperCase() || "EMPLOYEE" });
 
     const employee = await Employee.create({ user: user._id, name, department: departmentId });
 
@@ -64,4 +62,25 @@ const Login = async (req: Request, res: Response) => {
   }
 };
 
-export { register, Login };
+const getMe = async (req: Request, res: Response) => {
+  try {
+    const userPayload = (req as any).user;
+    if (!userPayload) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const user = await User.findById(userPayload.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const employee = await Employee.findOne({ user: user._id }).populate("department").exec();
+
+    return res.json({ user, employee });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export { register, Login, getMe };

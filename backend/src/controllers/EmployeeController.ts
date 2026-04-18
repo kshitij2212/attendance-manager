@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import mongoose from "../config/mongo";
-const Employee = require("../models/employee");
-const User = require("../models/user");
-import bcrypt from "bcrypt";
+import Employee from "../models/employee";
+import User from "../models/user";
 
 const createEmployee = async (req: Request, res: Response) => {
   try {
@@ -13,8 +12,7 @@ const createEmployee = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Email already existed." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ email: email.toLowerCase(), password: hashedPassword, role: role?.toUpperCase() || "EMPLOYEE" });
+    const user = await User.create({ email: email.toLowerCase(), password, role: role?.toUpperCase() || "EMPLOYEE" });
 
     const employee = await Employee.create({ user: user._id, name, department: departmentId || null });
     return res.status(201).json({ message: "Employee create successfully", employee });

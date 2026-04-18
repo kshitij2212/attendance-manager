@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-const Department = require("../models/department");
+import Department from "../models/department";
 import mongoose from "../config/mongo";
 
 const createDepartment = async (req: Request, res: Response) => {
