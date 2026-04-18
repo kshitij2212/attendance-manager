@@ -1,18 +1,20 @@
-# Employee Management System - Project Idea
+# SmartHRMS - Project Idea
 
 ## 🎯 Overview
 A full-stack Employee Management System (HRMS) for managing employees, attendance, leaves, and departments with role-based access control.
 
 ## 🛠️ Tech Stack
 
-### Backend (implemented a little bit)
+### Backend
 - Node.js + Express.js
+- TypeScript
 - MongoDB + Mongoose
 - JWT Authentication
 - bcryptjs for password hashing
 
-### Frontend (To be implemented)
-- React.js
+### Frontend
+- React.js (Vite)
+- TypeScript
 - Tailwind CSS 
 - Axios for API calls
 - React Router for navigation
@@ -93,7 +95,6 @@ graph TB
 
 ## 🚀 API Endpoints 
 
-### (to be made)
 ### Auth (`/api/auth`)
 - `POST /register` - Register new user
 - `POST /login` - Login user (returns JWT)
@@ -115,18 +116,16 @@ graph TB
 - `DELETE /:id` - Delete department [ADMIN]
 
 ### Attendance (`/api/attendance`)
-- `POST /checkin` - Mark check-in [EMPLOYEE]
-- `PUT /checkout` - Mark check-out [EMPLOYEE]
-- `GET /my-attendance` - View own attendance [EMPLOYEE]
-- `GET /employee/:id` - View employee attendance [ADMIN]
-- `GET /daily/:date` - Daily report [ADMIN]
-- `GET /monthly/:employeeId` - Monthly report [ADMIN]
+- `POST /check-in` - Mark check-in [EMPLOYEE]
+- `POST /check-out` - Mark check-out [EMPLOYEE]
+- `GET /` - View all attendance [ADMIN]
+- `GET /stats` - Dashboard stats [ADMIN/EMPLOYEE]
+- `GET /:employeeId` - View employee attendance history
 
 ### Leaves (`/api/leaves`)
 - `POST /apply` - Apply leave [EMPLOYEE]
-- `GET /my-leaves` - View own leaves [EMPLOYEE]
+- `GET /my-leaves/:employeeId` - View own leaves [EMPLOYEE]
 - `GET /all` - View all leaves [ADMIN]
-- `GET /pending` - Pending leaves [ADMIN]
 - `PUT /approve/:id` - Approve leave [ADMIN]
 - `PUT /reject/:id` - Reject leave [ADMIN]
 
@@ -166,25 +165,19 @@ graph TB
 
 ---
 
-## 📱 Frontend Features (To be built)
+## 📱 Frontend Features
 
 ### Pages
-1. **Login/Register Page**
-2. **Dashboard** (role-specific)
-   - Admin: Overview stats, pending leaves, today's attendance
-   - Employee: Own stats, quick actions
-3. **Employee Management** [ADMIN]
-   - List, add, edit, delete employees
-4. **Department Management** [ADMIN]
-5. **Attendance Page**
-   - Employee: Check-in/out buttons, own history
-   - Admin: View all attendance, filters by date/employee
+1. **Login/Register Page** - Secure entry with validation.
+2. **Dashboard** (Role-specific)
+   - Admin: Overview stats (Total Emps, Present, On Leave), Quick actions.
+   - Employee: Today's status, Check-in/out buttons.
+3. **Employee Management** [ADMIN] - Full CRUD for employees.
+4. **Department Management** [ADMIN] - Organize employees by team.
+5. **Attendance Logs** - Searchable and filterable history.
 6. **Leave Management**
-   - Employee: Apply leave form, leave history
-   - Admin: Pending leaves list, approve/reject actions
-7. **Reports** [ADMIN]
-   - Monthly attendance reports
-   - Department-wise stats
+   - Employee: Application form and history.
+   - Admin: Approval workflow dashboard.
 
 
 ## 🔮 Future Enhancements
@@ -194,6 +187,6 @@ graph TB
 
 ---
 
-**Status**: In Development  
-**Current Phase**: Backend Foundation  
-**Last Updated**: Feb 2026
+**Status**: MVP Completed
+**Current Phase**: Refinement & Polish  
+**Last Updated**: April 2026
