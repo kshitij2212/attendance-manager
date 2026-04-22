@@ -60,7 +60,7 @@ export default function StartupLoader({ onReady }: { onReady: () => void }) {
           <div style={{ ...styles.progressBar, width: `${Math.min((elapsed / 60) * 100, 97)}%` }} />
         </div>
 
-        <p style={styles.hint}>☕ Render free-tier servers sleep when idle. Hang tight!</p>
+        <p style={styles.hint}>Render free-tier servers sleep when idle. Hang tight!</p>
       </div>
 
       <style>{`
