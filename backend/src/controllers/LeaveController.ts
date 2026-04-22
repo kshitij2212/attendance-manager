@@ -54,8 +54,7 @@ const approveLeave = async (req: Request, res: Response) => {
     const end = new Date(leaveRequest.endDate);
 
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      const dateOnly = new Date(d);
-      dateOnly.setHours(0, 0, 0, 0);
+      const dateOnly = new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
       try {
         await Attendance.create({

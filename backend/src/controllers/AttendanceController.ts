@@ -8,8 +8,8 @@ import { handleError } from "../utils/handleError";
 const checkIN = async (req: Request, res: Response) => {
   try {
     const { employeeId } = req.body;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     const employeeObjId = new mongoose.Types.ObjectId(employeeId);
 
@@ -88,8 +88,8 @@ const getattendancebyId = async (req: Request, res: Response) => {
 
 const getDashboardStats = async (_req: Request, res: Response) => {
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     const totalEmployees = await Employee.countDocuments();
     const presentToday = await Attendance.countDocuments({ date: today, status: "PRESENT" });

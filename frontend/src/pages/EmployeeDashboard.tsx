@@ -31,16 +31,11 @@ const EmployeeDashboard: React.FC = () => {
       const { data } = await api.get(`/attendance/${employee._id}`);
       setHistory(data);
       
-      const today = new Date();
-      const todayStr = today.getFullYear() + '-' + 
-                      String(today.getMonth() + 1).padStart(2, '0') + '-' + 
-                      String(today.getDate()).padStart(2, '0');
+      const now = new Date();
+      const todayStr = now.toLocaleDateString('en-CA');
 
       const found = data.find((r: any) => {
-          const d = new Date(r.date);
-          const recDate = d.getFullYear() + '-' + 
-                         String(d.getMonth() + 1).padStart(2, '0') + '-' + 
-                         String(d.getDate()).padStart(2, '0');
+          const recDate = new Date(r.date).toLocaleDateString('en-CA');
           return recDate === todayStr;
       });
       setTodayRecord(found);

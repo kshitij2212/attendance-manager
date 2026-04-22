@@ -66,10 +66,12 @@ const attendanceSchema: Schema<IAttendance> = new mongoose.Schema(
 attendanceSchema.index({ employee: 1, date: 1 }, { unique: true });
 
 attendanceSchema.pre<IAttendance>("save", async function () {
-  if (this.date) {
-    const d = new Date(this.date as Date);
-    d.setHours(0, 0, 0, 0);
-    this.date = d;
+  if (this.isModified("date") || this.isNew) {
+    if (this.date) {
+      const d = new Date(this.date as Date);
+      d.setHours(0, 0, 0, 0);
+      this.date = d;
+    }
   }
 
   if (this.status === "LEAVE") {
