@@ -15,6 +15,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 app.get('/', (_req, res) => res.send('Hey Attendance-Manager'));
+app.get('/api/health', (_req, res) => res.status(200).json({ status: 'ok' }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/employees', employeeRoutes);

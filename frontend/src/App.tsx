@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import LoginPage from './pages/LoginPage';
@@ -9,6 +10,7 @@ import EmployeeDashboard from './pages/EmployeeDashboard';
 import EmployeeManagement from './pages/EmployeeManagement';
 import LeaveManagement from './pages/LeaveManagement';
 import AttendanceLogs from './pages/AttendanceLogs';
+import StartupLoader from './components/Shared/StartupLoader';
 
 const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) => {
   const { user, loading } = useAuth();
@@ -59,13 +61,21 @@ function AppRoutes() {
 }
 
 function App() {
+  const [serverReady, setServerReady] = useState(false);
+  const handleReady = useCallback(() => setServerReady(true), []);
+
   return (
-    <Router>
-      <AuthProvider>
-        <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
-        <AppRoutes />
-      </AuthProvider>
-    </Router>
+    <>
+      {!serverReady && <StartupLoader onReady={handleReady} />}
+      {serverReady && (
+        <Router>
+          <AuthProvider>
+            <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+            <AppRoutes />
+          </AuthProvider>
+        </Router>
+      )}
+    </>
   );
 }
 
