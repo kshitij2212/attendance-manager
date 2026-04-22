@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import Leave from "../models/leave";
 import mongoose from "../config/mongo";
-
 import Attendance from "../models/attendance";
+import { handleError } from "../utils/handleError";
 
 const applyLeave = async (req: Request, res: Response) => {
   try {
@@ -34,8 +34,7 @@ const applyLeave = async (req: Request, res: Response) => {
 
     return res.status(201).json({ message: "Applied for Leave Successfully.", apply });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error." });
+    return handleError(error, res);
   }
 };
 
@@ -71,8 +70,7 @@ const approveLeave = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Leave approved Successfully and attendance updated.", approved: leaveRequest });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "server error." });
+    return handleError(error, res);
   }
 };
 
@@ -92,8 +90,7 @@ const rejectLeave = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Leave rejected successfully.", rejected: updated });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "server error." });
+    return handleError(error, res);
   }
 };
 
@@ -102,8 +99,7 @@ const getallLeaves = async (_req: Request, res: Response) => {
     const allleaves = await Leave.find().populate("employee").exec();
     return res.status(200).json({ message: "All leaves fetched successfully.", allleaves });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "server error." });
+    return handleError(error, res);
   }
 };
 
@@ -114,8 +110,7 @@ const getLeavesByID = async (req: Request, res: Response) => {
     const leave = await Leave.find({ employee: new mongoose.Types.ObjectId(employeeId as string) }).populate("employee").exec();
     return res.status(200).json({ message: "Here is leave by your id.", leave });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "server error." });
+    return handleError(error, res);
   }
 };
 

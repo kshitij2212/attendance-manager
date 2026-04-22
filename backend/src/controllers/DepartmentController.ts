@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Department from "../models/department";
-import mongoose from "../config/mongo";
+import { handleError } from "../utils/handleError";
 
 const createDepartment = async (req: Request, res: Response) => {
   try {
@@ -14,8 +14,7 @@ const createDepartment = async (req: Request, res: Response) => {
     const department = await Department.create({ name: name.toLowerCase(), description });
     return res.status(201).json({ message: "Department created Successfully.", department });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 
@@ -24,8 +23,7 @@ const getAllDepartment = async (_req: Request, res: Response) => {
     const allDepartment = await Department.find().populate("employees").exec();
     return res.status(200).json(allDepartment);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 
@@ -38,8 +36,7 @@ const getDepartmentbyID = async (req: Request, res: Response) => {
     }
     return res.status(200).json(departmentbyId);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 
@@ -49,8 +46,7 @@ const deleteDepartment = async (req: Request, res: Response) => {
     await Department.findByIdAndDelete(id);
     return res.status(200).json({ message: "Department deleted successfully." });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 
@@ -59,8 +55,7 @@ const getPublicDepartments = async (_req: Request, res: Response) => {
     const departments = await Department.find({}, { name: 1 }).exec();
     return res.status(200).json(departments);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 

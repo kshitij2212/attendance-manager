@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import mongoose from "../config/mongo";
 import Employee from "../models/employee";
 import User from "../models/user";
+import { handleError } from "../utils/handleError";
 
 const createEmployee = async (req: Request, res: Response) => {
   try {
@@ -17,8 +17,7 @@ const createEmployee = async (req: Request, res: Response) => {
     const employee = await Employee.create({ user: user._id, name, department: departmentId || null });
     return res.status(201).json({ message: "Employee create successfully", employee });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 
@@ -27,8 +26,7 @@ const getAllEmployee = async (_req: Request, res: Response) => {
     const allEmployee = await Employee.find().populate("department").populate("user").exec();
     return res.status(200).json(allEmployee);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 
@@ -41,8 +39,7 @@ const getEmployeebyId = async (req: Request, res: Response) => {
     }
     return res.status(200).json(employee);
   } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).json({ message: "Server error", error: (error as Error).message });
+    return handleError(error, res);
   }
 };
 
@@ -66,8 +63,7 @@ const updateEmployee = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Employee Updated Successfully", employee: updated });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 
@@ -82,8 +78,7 @@ const deleteEmployee = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Employee Deleted Successfully." });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 
@@ -95,8 +90,7 @@ const assignDepartment = async (req: Request, res: Response) => {
     const employee = await Employee.findByIdAndUpdate(id, { department: departmentId }, { new: true }).exec();
     return res.status(200).json({ message: "Department assigned successfully.", employee });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
+    return handleError(error, res);
   }
 };
 

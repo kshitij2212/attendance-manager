@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import mongoose from "../config/mongo";
 import Attendance from "../models/attendance";
-
 import Employee from "../models/employee";
 import Leave from "../models/leave";
+import { handleError } from "../utils/handleError";
 
 const checkIN = async (req: Request, res: Response) => {
   try {
@@ -29,8 +29,7 @@ const checkIN = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Check in Successfully.", attendance });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error." });
+    return handleError(error, res);
   }
 };
 
@@ -58,8 +57,7 @@ const checkOut = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Checked out successfully.", attendance });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error." });
+    return handleError(error, res);
   }
 };
 
@@ -72,8 +70,7 @@ const getAllAttendance = async (_req: Request, res: Response) => {
 
     return res.status(200).json(allAttendance);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error." });
+    return handleError(error, res);
   }
 };
 
@@ -85,8 +82,7 @@ const getattendancebyId = async (req: Request, res: Response) => {
     const data = await Attendance.find({ employee: employeeObjId }).sort({ date: -1 }).populate("employee").exec();
     res.status(200).json(data);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error." });
+    return handleError(error, res);
   }
 };
 
@@ -116,8 +112,7 @@ const getDashboardStats = async (_req: Request, res: Response) => {
       recentAttendance,
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
+    return handleError(error, res);
   }
 };
 

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import mongoose from "../config/mongo";
 import User from "../models/user";
 import Employee from "../models/employee";
 import Department from "../models/department";
 import jwt from "jsonwebtoken";
+import { handleError } from "../utils/handleError";
 
 const register = async (req: Request, res: Response) => {
   try {
@@ -13,7 +13,6 @@ const register = async (req: Request, res: Response) => {
     if (existing) {
       return res.status(400).json({ message: "User already exists." });
     }
-
 
     let departmentId = null;
     if (department) {
@@ -31,8 +30,7 @@ const register = async (req: Request, res: Response) => {
 
     return res.status(201).json({ message: "Employee added successfully.", user, employee });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "server error" });
+    return handleError(error, res);
   }
 };
 
@@ -57,8 +55,7 @@ const Login = async (req: Request, res: Response) => {
 
     return res.json({ message: "Login Successfully", token, user: { id: user._id, email: user.email, role: user.role }, employee });
   } catch (error) {
-    console.error(error);
-    return res.status(401).json({ message: "Invalid Json" });
+    return handleError(error, res);
   }
 };
 
@@ -78,8 +75,7 @@ const getMe = async (req: Request, res: Response) => {
 
     return res.json({ user, employee });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
+    return handleError(error, res);
   }
 };
 
